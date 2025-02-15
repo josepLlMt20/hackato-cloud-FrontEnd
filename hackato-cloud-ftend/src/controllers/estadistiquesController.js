@@ -35,7 +35,33 @@ const estadistiquesController = {
             console.error("Error cargando datos de habitages turísticos:", error);
             return null;
         }
+    },
+
+    getDadesMunicipis: async () => {
+        try {
+            const data = await apiService.getHabTuristics();
+
+            // Agrupar por municipio y sumar el total
+            const agregados = data.reduce((acc, item) => {
+                const municipi = item.poblacio; // o item.municipi si prefieres
+                if (!acc[municipi]) {
+                    acc[municipi] = 0;
+                }
+                acc[municipi] += item.total;
+                return acc;
+            }, {});
+
+            // Convertir objeto en array para el gráfico
+            return Object.keys(agregados).map(municipi => ({
+                municipi,
+                cantidadHabitages: agregados[municipi]
+            }));
+        } catch (error) {
+            console.error('Error obteniendo datos de municipios:', error);
+            return [];
+        }
     }
+
 }
 
 export default estadistiquesController;

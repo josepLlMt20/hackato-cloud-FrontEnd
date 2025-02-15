@@ -8,6 +8,10 @@ const ChartsGrid = () => {
         { id: 'chart2', title: 'Gráfico 2' },
         { id: 'chart3', title: 'Gráfico 3' },
         { id: 'chart4', title: 'Gráfico 4' },
+        { id: 'chart1', title: 'Gráfico 5' },
+        { id: 'chart2', title: 'Gráfico 6' },
+        { id: 'chart3', title: 'Gráfico 7' },
+        { id: 'chart4', title: 'Gráfico 8' },
     ];
 
     return (
