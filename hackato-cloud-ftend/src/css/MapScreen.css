@@ -1,0 +1,41 @@
+/* CSS (MapScreen.css) */
+.map-screen-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.map-content {
+    margin-top: 100px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.map-title {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
+}
+.map-container {
+    width: 80%;
+    max-width: 1000px;
+    height: 70vh;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.leaflet-map {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+.footer-container {
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

@@ -1,10 +1,12 @@
 import "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Navbar, Nav, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
 export default function Welcome() {
+    const navigate = useNavigate();
     return (
         <div>
             {/* Navbar */}
@@ -36,7 +38,9 @@ export default function Welcome() {
                     Este proyecto tiene como objetivo concienciar a la sociedad sobre la situación actual del mercado de la vivienda en la comarca del
                     Tarragonés. Queremos promover el acceso justo a la vivienda mediante datos actualizados y análisis detallados.
                 </p>
-                <Button variant="primary" className="mt-4">Empezar</Button>
+                <Button variant="primary" className="mt-4" onClick={() => navigate('/mapa')}>
+                    Empezar
+                </Button>
             </div>
 
             {/* Footer */}

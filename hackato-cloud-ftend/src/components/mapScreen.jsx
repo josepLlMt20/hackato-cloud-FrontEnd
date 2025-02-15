@@ -1,28 +1,39 @@
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, useMap, GeoJSON } from "react-leaflet";
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+import L from 'leaflet';
+import 'leaflet-defaulticon-compatibility';
 import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
+import "../css/MapScreen.css";
+import {geoJsonTarragones} from "../geojson/geoJsonTarragones.js";
+import mapController from '../controllers/mapController';
+import { useEffect, useState } from 'react';
+
 
 const MapScreen = () => {
-    const [geojsonData, setGeojsonData] = useState(null);
+    // Componente para centrar el mapa automáticamente
+    const CenterMap = () => {
+        const map = useMap();
+
+        // Centrar el mapa cuando se monta o actualiza
+        map.setView([41.15, 1.1], map.getZoom());
+
+        return null;
+    };
+
+    const [geoData, setGeoData] = useState(null);
 
     useEffect(() => {
-        const fetchGeojson = async () => {
-            try {
-                const response = await fetch("./geojson/tarragones.geojson");
-                const data = await response.json();
-                setGeojsonData(data);
-            } catch (error) {
-                console.error("Error cargando el GeoJSON:", error);
-            }
+        const fetchData = async () => {
+            const data = await mapController.getGeojsonWithRentData();
+            setGeoData(data);
         };
-        fetchGeojson();
+        fetchData();
     }, []);
 
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            {/* Navbar fijo arriba */}
             <Navbar bg="dark" variant="dark" expand="lg" className="fixed-top w-100 shadow px-4">
                 <Navbar.Brand as={Link} to="/">TgnInfoVivienda</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -35,22 +46,45 @@ const MapScreen = () => {
                 </Navbar.Collapse>
             </Navbar>
 
-            {/* Espaciador para evitar que el contenido quede oculto detrás del Navbar */}
-            <div style={{ marginTop: "80px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-                <h2 style={{ textAlign: "center", marginBottom: "15px" }}>Mapa de Tarragonès</h2>
-                <div style={{ width: "80%", maxWidth: "900px", height: "60vh", border: "2px solid #ccc", borderRadius: "10px", overflow: "hidden", boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)" }}>
+            <div style={{ marginTop: "100px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Mapa interactivo</h2>
+                <div style={{ width: "75vw", height: "65vh", border: "3px solid #ccc", borderRadius: "15px", padding: "10px", backgroundColor: "#f9f9f9", boxShadow: "4px 4px 15px rgba(0, 0, 0, 0.2)" }}>
                     <MapContainer center={[41.15, 1.1]} zoom={10} style={{ width: "100%", height: "100%" }}>
+                        <CenterMap />
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            attribution='© OpenStreetMap contributors'
                         />
-                        {geojsonData && <GeoJSON data={geojsonData} />}
+
+                        {/* Capa base del Tarragonès */}
+                        <GeoJSON data={geoJsonTarragones} style={{ color: "#000", weight: 1, fillColor: "#007967", fillOpacity: 0.2 }} />
+
+                        {/* Capa superpuesta con datos de alquiler */}
+                        {geoData && (
+                            <GeoJSON
+                                data={geoData}
+                                style={() => ({
+                                    color: "#000",
+                                    weight: 2,
+                                    fillColor: "#ff0000",
+                                    fillOpacity: 0.4
+                                })}
+                                onEachFeature={(feature, layer) => {
+                                    if (feature.properties) {
+                                        const { nomTerritori, tramPreus, renda } = feature.properties;
+                                        layer.bindPopup(`<h3>${nomTerritori}</h3>
+                                     <p>Renda: ${renda} €/mes</p>
+                                     <p>Preu: ${tramPreus}</p>`);
+                                    }
+                                }}
+                            />
+                        )}
                     </MapContainer>
+
                 </div>
             </div>
 
-            <footer className="bg-dark text-white w-100 text-center d-flex justify-content-center align-items-center"
-                    style={{ height: "50px", position: "fixed", bottom: "0", left: "0", right: "0" }}>
+            <footer className="bg-dark text-white w-100 text-center d-flex justify-content-center align-items-center" style={{ height: "50px", position: "fixed", bottom: "0", left: "0", right: "0" }}>
                 <p className="m-0">Creado por Ivan Arenal, Angelina Ruíz y Josep Lluís Marin - Universitat Rovira i Virgili (URV)</p>
             </footer>
         </div>

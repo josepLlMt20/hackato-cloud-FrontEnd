@@ -1,7 +1,8 @@
 import "leaflet/dist/leaflet.css";
 import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import HabitagesChart from '../charts/HabitatgesChart.jsx'; // Asegúrate de importar el componente HabitagesChart
+import HabitagesChart from '../charts/HabitatgesChart.jsx';
+import ChartsGrid from "../charts/ChartGrid.jsx"; // Asegúrate de importar el componente HabitagesChart
 
 const estadistiquesScreen = () => {
     return (
@@ -21,7 +22,7 @@ const estadistiquesScreen = () => {
 
             <div className="App">
                 <h1>Estadísticas de Habitages Turísticos</h1>
-                <HabitagesChart />
+                <ChartsGrid />
             </div>
 
             <footer className="bg-dark text-white w-100 text-center d-flex justify-content-center align-items-center"
