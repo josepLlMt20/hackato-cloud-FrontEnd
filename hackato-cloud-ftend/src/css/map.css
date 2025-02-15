@@ -1,0 +1,4 @@
+.navbar {
+    width: 100vw !important; /* Fuerza a ocupar todo el viewport */
+    max-width: 100% !important;
+}

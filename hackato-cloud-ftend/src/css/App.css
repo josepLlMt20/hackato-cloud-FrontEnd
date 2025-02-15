@@ -1,0 +1,37 @@
+/* Estilo general para evitar espacios vacíos */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Asegurar que el contenedor principal ocupe toda la pantalla */
+.main-container {
+  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+}
+
+/* Mejorar la sección de bienvenida */
+.welcome-section {
+  width: 100%;
+  max-width: 900px;
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #007bff, #6610f2);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustar el navbar para evitar que afecte la altura */
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
